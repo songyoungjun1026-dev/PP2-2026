@@ -1,3 +1,0 @@
-print("eee")  
-
-print ("SS")
