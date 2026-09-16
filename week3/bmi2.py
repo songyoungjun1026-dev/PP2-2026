@@ -4,3 +4,7 @@
 #함수와 테스트하는 함수를 작성하시오
 #BMI 함수는 지난 시간에 작성한 get_bmi 함수를 이용하여 작성하시오.
 
+def get_bmi(weight_kg:float, height_cm:float) -> float:
+    bmi = weight_kg / (height_cm/100) ** 2
+    return bmi
+    
