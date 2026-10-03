@@ -8,7 +8,7 @@ def get_bmi(weight_kg:float, height_cm:float) -> float:
     return bmi
 
 def test_get_bmi():
-    height_cm = 177
+    height_cm = 165
     weight_kg = 57
     b = get_bmi(weight_kg, height_cm)
     print(f"키({height_cm}) 몸무게({weight_kg}) BMI는 {b}입니다")
