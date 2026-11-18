@@ -11,13 +11,15 @@ import csv
 
 
 class Healthrecord:
-    def __init__(self, birth, gender, name, height, weight, bmi):
+    def __init__(self,status,birth, gender, name, height, weight, bmi,id):
+        self.id = id
         self.birth = birth
         self.gender = gender
         self.name = name
         self.height = height
         self.weight = weight
         self.bmi = bmi
+        self.status = status
 
 
 class HealthManager:
