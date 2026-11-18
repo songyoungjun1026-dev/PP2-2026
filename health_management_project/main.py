@@ -11,7 +11,8 @@ while True:
     print("2. JSON 파일 저장")
     print("3. CSV 파일 저장")
     print("4. Pickle 파일 저장")
-    print("5. 종료")
+    print("5. TXT 파일 저장")
+    print("6. 종료")
 
     menu = input("메뉴를 선택하세요: ")
 
@@ -28,6 +29,9 @@ while True:
         manager.save_pickle()
 
     elif menu == "5":
+            manager.save_txt()
+
+    elif menu == "6":
         manager.update_file()
         print("프로그램을 종료합니다.")
         break
