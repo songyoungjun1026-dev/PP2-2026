@@ -1,4 +1,6 @@
 
+
+
 # HealthRecord
 # HealthManager
 
@@ -7,37 +9,30 @@ import os
 import pickle
 import csv
 
+
 class Healthrecord:
-    def __init__(self, id, birth, gender, name, height, weight, bmi, status):
-        self.id = id
+    def __init__(self, birth, gender, name, height, weight, bmi):
         self.birth = birth
         self.gender = gender
         self.name = name
         self.height = height
         self.weight = weight
         self.bmi = bmi
-        self.status = status
-
-    def get_bmi(self):
-        bmi = self.weight / ((self.height / 100) ** 2)
-        return round(bmi, 1)
 
 
 class HealthManager:
     def __init__(self):
         self.datas = []
 
-        # AI는 사용하지 않았으나 파일 입출력 강의 PPT 참고
-        self.file_path = os.path.join(
-            os.path.dirname(__file__), "..", "data", "data.json"
-        )
+        # AI 사용: JSON, CSV, PICKLE 파일 경로 설정
+        base_path = os.path.join(os.path.dirname(__file__), "..", "data")
 
-        try:
-            if not os.path.exists(self.file_path):
-                raise FileNotFoundError
+        self.file_path = os.path.join(base_path, "data.json")
+        self.csv_path = os.path.join(base_path, "data.csv")
+        self.pickle_path = os.path.join(base_path, "data.pickle")
 
-        except FileNotFoundError:
-            print("존재하지 않는 파일입니다. 경로를 다시 확인해주세요.")
+        # AI 사용: 데이터 폴더가 없으면 자동 생성
+        os.makedirs(base_path, exist_ok=True)
 
         # AI 사용: 마지막 환자 번호 저장
         self.last_id = 0
@@ -78,9 +73,9 @@ class HealthManager:
         print("환자 정보가 추가되었습니다.")
         print("환자식별번호:", id)
 
-    # 파일 불러오기
+    # JSON 파일 불러오기
+    # AI 사용: JSON 파일 읽기
     def load_file(self):
-        # AI 사용: JSON 파일 읽기
         try:
             with open(self.file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
@@ -103,13 +98,14 @@ class HealthManager:
 
             # AI 사용: 마지막 환자 번호 확인
             if self.datas:
-                last_id = self.datas[-1].id
-                self.last_id = int(last_id.split("-")[1])
+                self.last_id = max(
+                    int(info.id.split("-")[1]) for info in self.datas
+                )
 
         except FileNotFoundError:
-            print("파일이 존재하지 않습니다.")
+            print("JSON 파일이 존재하지 않습니다.")
 
-    # 파일 저장하기
+    # JSON 파일 저장하기
     def update_file(self):
         data = []
 
@@ -129,4 +125,83 @@ class HealthManager:
         with open(self.file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
 
-        print("파일 저장이 완료되었습니다.")
+        print("JSON 파일 저장이 완료되었습니다.")
+
+    # AI 사용: CSV 파일 불러오기
+    def load_csv(self):
+        try:
+            with open(self.csv_path, "r", encoding="utf-8-sig") as f:
+                reader = csv.DictReader(f)
+
+                self.datas = []
+
+                for item in reader:
+                    info = Healthrecord(
+                        item["id"],
+                        int(item["birth"]),
+                        item["gender"],
+                        item["name"],
+                        float(item["height"]),
+                        float(item["weight"]),
+                        float(item["bmi"]),
+                        item["status"]
+                    )
+
+                    self.datas.append(info)
+
+            if self.datas:
+                self.last_id = max(
+                    int(info.id.split("-")[1]) for info in self.datas
+                )
+
+            print("CSV 파일 불러오기가 완료되었습니다.")
+
+        except FileNotFoundError:
+            print("CSV 파일이 존재하지 않습니다.")
+
+    # AI 사용: CSV 파일 저장하기
+    def save_csv(self):
+        with open(self.csv_path, "w", newline="", encoding="utf-8-sig") as f:
+            writer = csv.writer(f)
+
+            writer.writerow([
+                "id", "birth", "gender", "name",
+                "height", "weight", "bmi", "status"
+            ])
+
+            for info in self.datas:
+                writer.writerow([
+                    info.id,
+                    info.birth,
+                    info.gender,
+                    info.name,
+                    info.height,
+                    info.weight,
+                    info.bmi,
+                    info.status
+                ])
+
+        print("CSV 파일 저장이 완료되었습니다.")
+
+    # AI 사용: PICKLE 파일 불러오기
+    def load_pickle(self):
+        try:
+            with open(self.pickle_path, "rb") as f:
+                self.datas = pickle.load(f)
+
+            if self.datas:
+                self.last_id = max(
+                    int(info.id.split("-")[1]) for info in self.datas
+                )
+
+            print("PICKLE 파일 불러오기가 완료되었습니다.")
+
+        except FileNotFoundError:
+            print("PICKLE 파일이 존재하지 않습니다.")
+
+    # AI 사용: PICKLE 파일 저장하기
+    def save_pickle(self):
+        with open(self.pickle_path, "wb") as f:
+            pickle.dump(self.datas, f)
+
+        print("PICKLE 파일 저장이 완료되었습니다.")

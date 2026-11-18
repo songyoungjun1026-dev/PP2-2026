@@ -1,5 +1,5 @@
 
-from Healthrecord import HealthManager
+from modules.health_db import HealthManager
 
 manager = HealthManager()
 
