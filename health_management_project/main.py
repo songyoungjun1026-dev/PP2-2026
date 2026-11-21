@@ -1,9 +1,7 @@
+from modules.health_logic import HealthLogic
 
-from modules.health_db import HealthManager
-
-manager = HealthManager()
-
-manager.load_file()
+logic = HealthLogic()
+logic.load()
 
 while True:
     print("\n===== 건강관리 프로그램 =====")
@@ -17,22 +15,36 @@ while True:
     menu = input("메뉴를 선택하세요: ")
 
     if menu == "1":
-        manager.add_file()
+        birth = input("생년: ")
+        gender = input("성별 (남/여): ")
+        name = input("이름: ")
+        height = input("키(cm): ")
+        weight = input("몸무게(kg): ")
+
+        ok, msg = logic.add_record(
+            birth, gender, name, height, weight
+        )
+        print(msg)
 
     elif menu == "2":
-        manager.update_file()
+        logic.set_format("json")
+        logic.save()
 
     elif menu == "3":
-        manager.save_csv()
+        logic.set_format("csv")
+        logic.save()
 
     elif menu == "4":
-        manager.save_pickle()
+        logic.set_format("pickle")
+        logic.save()
 
     elif menu == "5":
-            manager.save_txt()
+        logic.set_format("txt")
+        logic.save()
 
     elif menu == "6":
-        manager.update_file()
+        logic.set_format("json")
+        logic.save()
         print("프로그램을 종료합니다.")
         break
 
