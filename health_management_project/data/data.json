@@ -8,5 +8,25 @@
         "weight": 100.0,
         "bmi": 100.0,
         "status": "3단계 비만"
+    },
+    {
+        "id": "P0002",
+        "birth": "2007",
+        "gender": "남",
+        "name": "송영준",
+        "height": 166.0,
+        "weight": 58.0,
+        "bmi": 21.05,
+        "status": "정상"
+    },
+    {
+        "id": "P0003",
+        "birth": "2007",
+        "gender": "남",
+        "name": "윤완",
+        "height": 172.0,
+        "weight": 65.0,
+        "bmi": 21.97,
+        "status": "정상"
     }
 ]
